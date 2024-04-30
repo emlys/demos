@@ -14,9 +14,9 @@ srs.ImportFromEPSG(3116)
 source_vector_path = 'vector.geojson'
 vector_driver = ogr.GetDriverByName('GeoJSON')
 vector = vector_driver.CreateDataSource(source_vector_path)
-layer = target_vector.CreateLayer('test', srs=srs, geom_type=ogr.wkbPolygon)
-layer_defn = target_layer.GetLayerDefn()
-new_feature = ogr.Feature(layer_defn)
+layer = vector.CreateLayer('test', srs=srs, geom_type=ogr.wkbPolygon)
+layer_defn = layer.GetLayerDefn()
+feature = ogr.Feature(layer_defn)
 geometry = ogr.CreateGeometryFromWkb(
     # invalid geometry: bowtie shape with self-intersection at the center
     shapely.geometry.Polygon([
@@ -26,7 +26,7 @@ geometry = ogr.CreateGeometryFromWkb(
         ) for x_offset, y_offset in [(0, 0), (0, 1), (1, 0), (1, 1), (0, 0)]]
     ).wkb)
 feature.SetGeometry(geometry)
-layer.CreateFeature(new_feature)
+layer.CreateFeature(feature)
 layer = None
 vector = None
 
