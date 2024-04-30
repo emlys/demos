@@ -47,4 +47,4 @@ layer = vector.GetLayer(0)
 gdal.RasterizeLayer(raster, [1], layer, burn_values=[1], options=['ALL_TOUCHED=TRUE'])
 
 band = raster.GetRasterBand(1)
-numpy.testing.assert_array_equal(band.ReadAsArray(), numpy.array([[1]])
+numpy.testing.assert_array_equal(band.ReadAsArray(), numpy.array([[1]]))
