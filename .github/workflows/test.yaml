@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [macos-13, macos-14]
     steps:
       - uses: actions/checkout@v3
 
@@ -40,9 +40,14 @@ jobs:
                 channels:
                   - conda-forge
           init-shell: bash
+          create-args: >-
+            python
+            gdal
+            shapely
 
-      - name: Install dependencies
-        run: micromamba install python gdal shapely
+      - name: List conda environment
+        shell: bash -l {0}
+        run: micromamba list
 
       - name: Run test
         run: python test.py
