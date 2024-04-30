@@ -1,0 +1,49 @@
+name: Run Tests and Build
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: bash -l {0}
+
+concurrency:
+  # make sure only one run of this workflow for a given PR or a given branch
+  # can happen at one time. previous queued or started runs will be cancelled.
+  # github.workflow is the workflow name
+  # github.ref is the ref that triggered the workflow run
+  # on push, this is refs/heads/<branch name>
+  # on pull request, this is refs/pull/<pull request number>/merge
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # build: dependency of make install
+  # nomkl: make sure numpy w/out mkl
+  # setuptools_scm: needed for versioning to work
+  CONDA_DEFAULT_DEPENDENCIES: python-build nomkl setuptools_scm
+  LATEST_SUPPORTED_PYTHON_VERSION: "3.12"
+
+jobs:
+  run-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up conda environment
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          condarc: |
+                channels:
+                  - conda-forge
+          init-shell: bash
+
+      - name: Install dependencies
+        run: micromamba install python gdal shapely
+
+      - name: Run test
+        run: python test.py
+
