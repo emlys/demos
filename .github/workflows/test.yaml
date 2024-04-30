@@ -40,6 +40,7 @@ jobs:
                 channels:
                   - conda-forge
           init-shell: bash
+          environment-name: env
           create-args: >-
             python
             gdal
