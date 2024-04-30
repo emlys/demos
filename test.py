@@ -44,7 +44,7 @@ raster = None
 raster = gdal.OpenEx(source_raster_path, gdal.GA_Update | gdal.OF_RASTER)
 vector = gdal.OpenEx(source_vector_path, gdal.OF_VECTOR)
 layer = vector.GetLayer(0)
-gdal.RasterizeLayer(raster, [1], layer, burn_values=[1], options=['ALL_TOUCHED=FALSE'])
+gdal.RasterizeLayer(raster, [1], layer, burn_values=[1], options=['ALL_TOUCHED=TRUE'])
 
 band = raster.GetRasterBand(1)
 numpy.testing.assert_array_equal(band.ReadAsArray(), numpy.array([[1]])
