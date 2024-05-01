@@ -1,6 +1,5 @@
 import shapely
 
-a = shapely.from_wkt('POINT (100 100)')
+a = shapely.from_wkt('POLYGON ((110 110, 110 100, 100 100, 100 110, 110 110))')
 b = shapely.from_wkt('LINESTRING (100 -100, 100 100)')
-shapely.prepare(a)
 print(a.intersection(b))
