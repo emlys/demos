@@ -31,7 +31,7 @@ jobs:
       matrix:
         os: [macos-13, macos-14]
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@latest
 
       - name: Set up conda environment
         uses: mamba-org/setup-micromamba@v1
@@ -43,7 +43,9 @@ jobs:
           environment-name: env
           create-args: >-
             python
+            gdal==3.8.5
             shapely
+            numpy
 
       - name: Run test
         run: python test.py
